@@ -1,0 +1,144 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ML Model Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .prediction {
+            margin-top: 20px;
+            font-size: 20px;
+            background: #dff0d8;
+            border: 1px solid #d6e9c6;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>ML Model Prediction</h1>
+    <form id="prediction-form">
+        <label for="crim">CRIM:</label>
+        <input type="text" id="crim" name="crim" required><br>
+
+        <label for="zn">ZN:</label>
+        <input type="text" id="zn" name="zn" required><br>
+
+        <label for="indus">INDUS:</label>
+        <input type="text" id="indus" name="indus" required><br>
+
+        <label for="chas">CHAS:</label>
+        <select id="chas" name="chas" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+
+        <label for="nox">NOX:</label>
+        <input type="text" id="nox" name="nox" required><br>
+
+        <label for="rm">RM:</label>
+        <input type="text" id="rm" name="rm" required><br>
+
+        <label for="age">AGE:</label>
+        <input type="text" id="age" name="age" required><br>
+
+        <label for="dis">DIS:</label>
+        <input type="text" id="dis" name="dis" required><br>
+
+        <label for="rad">RAD:</label>
+        <input type="text" id="rad" name="rad" required><br>
+
+        <label for="tax">TAX:</label>
+        <input type="text" id="tax" name="tax" required><br>
+
+        <label for="ptratio">PTRATIO:</label>
+        <input type="text" id="ptratio" name="ptratio" required><br>
+
+        <label for="b">B:</label>
+        <input type="text" id="b" name="b" required><br>
+
+        <label for="lstat">LSTAT:</label>
+        <input type="text" id="lstat" name="lstat" required><br>
+
+        <button type="submit">Predict</button>
+    </form>
+
+    <div id="prediction-result" class="prediction" style="display:none;"></div>
+
+    <script>
+        document.getElementById("prediction-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    const predictionResult = document.getElementById('prediction-result');
+                    predictionResult.innerHTML = `Predicted MEDV: ${data.prediction}`;
+                    predictionResult.style.display = 'block';
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+
+</html>
